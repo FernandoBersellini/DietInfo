@@ -1,10 +1,13 @@
 package com.diet_info.dietInfo.user;
 
+import com.diet_info.dietInfo.user.model.UserDTO;
 import com.diet_info.dietInfo.user.services.UserService;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -16,7 +19,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<String> getUsersMethod() {
+    public ResponseEntity<List<UserDTO>> getUsersMethod() {
         return userService.getUsers();
     }
 
