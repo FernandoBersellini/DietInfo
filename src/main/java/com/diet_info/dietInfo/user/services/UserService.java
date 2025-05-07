@@ -1,15 +1,20 @@
 package com.diet_info.dietInfo.user.services;
 
-import com.diet_info.dietInfo.user.Command;
+import com.diet_info.dietInfo.user.exceptions.ErrorMessages;
+import com.diet_info.dietInfo.user.exceptions.UserNotFoundException;
+import com.diet_info.dietInfo.user.exceptions.UserNotValidException;
+import com.diet_info.dietInfo.user.model.UpdateUserCommand;
 import com.diet_info.dietInfo.user.model.User;
 import com.diet_info.dietInfo.user.model.UserDTO;
 import com.diet_info.dietInfo.user.repository.UserRepository;
-import org.hibernate.loader.NonUniqueDiscoveredSqlAliasException;
+import com.diet_info.dietInfo.user.validators.UserValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -28,15 +33,40 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.OK).body(userDTOS);
     }
 
-    public ResponseEntity<String> postUsers() {
-        return ResponseEntity.status(HttpStatus.CREATED).body("This is the POST method");
+    public ResponseEntity<UserDTO> postUsers(User user) {
+
+        UserValidator.isValid(user);
+
+        User saveUser = userRepository.save(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new UserDTO(saveUser));
     }
 
-    public ResponseEntity<String> putUsers() {
-        return ResponseEntity.status(HttpStatus.OK).body("This is the PUT method");
+    public ResponseEntity<UserDTO> putUsers(UpdateUserCommand command) {
+        Optional<User> userOptional = userRepository.findById(command.getId());
+
+        if (userOptional.isPresent()) {
+            User user = command.getUser();
+            user.setId(command.getId());
+
+            UserValidator.isValid(user);
+
+            userRepository.save(user);
+
+            return ResponseEntity.ok(new UserDTO(user));
+        }
+
+        throw new UserNotFoundException();
     }
 
-    public ResponseEntity<String> deleteUsers() {
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    public ResponseEntity<Void> deleteUsers(Integer id) {
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isPresent()) {
+            userRepository.deleteById(id);
+
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        throw new UserNotFoundException();
     }
 }
