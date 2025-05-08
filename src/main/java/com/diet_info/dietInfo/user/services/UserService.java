@@ -33,6 +33,16 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.OK).body(userDTOS);
     }
 
+    public ResponseEntity<UserDTO> getUserById(Integer id) {
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isPresent()) {
+            return ResponseEntity.ok(new UserDTO(userOptional.get()));
+        }
+
+        throw new UserNotFoundException(ErrorMessages.USER_NOT_FOUND.getMessage());
+    }
+
     public ResponseEntity<UserDTO> postUsers(User user) {
 
         UserValidator.isValid(user);
@@ -55,7 +65,7 @@ public class UserService {
             return ResponseEntity.ok(new UserDTO(user));
         }
 
-        throw new UserNotFoundException();
+        throw new UserNotFoundException(ErrorMessages.USER_NOT_FOUND.getMessage());
     }
 
     public ResponseEntity<Void> deleteUsers(Integer id) {
@@ -67,6 +77,6 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
 
-        throw new UserNotFoundException();
+        throw new UserNotFoundException(ErrorMessages.USER_NOT_FOUND.getMessage());
     }
 }

@@ -23,6 +23,11 @@ public class UserController {
         return userService.getUsers();
     }
 
+    @GetMapping("/getUserById/{id}")
+    public ResponseEntity<UserDTO> getUserByIdMethod(@PathVariable Integer id) {
+        return userService.getUserById(id);
+    }
+
     @PostMapping("/createUsers")
     public ResponseEntity<UserDTO> postUsersMethod(@RequestBody User user) {
         return userService.postUsers(user);
