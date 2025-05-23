@@ -1,9 +1,65 @@
-DietInfo
 
-DietInfo é uma API Rest desenvolvida com Spring Boot, com operações CRUD para criar usuários e inserir eles em um banco de dados.
+# DietInfo
 
-Os campos do usuário são: ID, Username, Password, Weight, Height
+Uma API Rest com funcionalidades CRUD para usuários de um sistema de um App de sáude.
 
-Toda operação retorna um DTO, que contém o Username, password, o IMC do usuário baseado nos campos weight e height (peso e altura respectivamente) e uma classificação, como underweight (abaixo do peso), normal, etc.
+## Stack utilizada
 
-Ao realizar uma operação de POST ou PUT, há validadores de dados, para certificar a integridade. Outros erros são tratados com exceções. Além disso, nas funções de selecionar um usuário por Id ou deletar por Id, há testes unitários.
+**Back-end:** Spring Boot, Postman, MySql
+
+
+## Documentação da API
+
+#### Retorna todos os usuários
+
+```http
+  GET /getUsers
+```
+
+#### Retorna um usuário
+
+```http
+  GET /getUserById/${id}
+```
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `id`      | `string` | **Obrigatório**. O ID do usuário que você quer as informações |
+
+#### Cria um usuário
+
+```http
+  POST /createUsers
+```
+
+#### Edita um usuário
+
+```http
+  PUT /updateUsers/${id}
+```
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `id`      | `string` | **Obrigatório**. O ID do usuário que você quer editar|
+
+#### Deleta um usúario
+
+```http
+  DELETE /deleteUsers/${id}
+```
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `id`      | `string` | **Obrigatório**. O ID do usuário que você quer deletar |
+
+
+
+
+## Aprendizados
+
+Neste projeto, me aprofundei no ecossistema Spring e o utilizei pela a primeira vez. Suas funcionalidades me deixaram muito agradado, e pretendo utiliza-lo como parte da minha stack principal
+
+## Feedback
+
+Se você tiver algum feedback, por favor nos deixe saber por meio de fernandobersellini@outlook.com.br
+
